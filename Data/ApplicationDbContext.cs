@@ -15,5 +15,6 @@ namespace SistemaInventario.Data
         public DbSet<Cliente> Clientes { get; set; }
         public DbSet<Factura> Facturas { get; set; }
         public DbSet<MovimientoInventario> MovimientoInventarios { get; set; }
+        public DbSet<DetalleFactura> DetalleFacturas { get; set; }
     }
 }

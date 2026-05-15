@@ -1,9 +1,11 @@
-﻿using System.ComponentModel.DataAnnotations.Schema;
+﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace SistemaInventario.Models
 {
     public class Factura
     {
+        [Key]
         public int Id { get; set; }
         public int Clienteid { get; set; }
 
@@ -13,14 +15,8 @@ namespace SistemaInventario.Models
 
         public DateOnly Fechainicio { get; set; }
         public DateOnly Fechalimite { get; set; }
-        public int Productoid { get; set; }
-
-        [ForeignKey("Productoid")]
-        public virtual Producto Producto { get; set; }
-        
-
-
-
+ 
+        public virtual ICollection<DetalleFactura> Detalles { get; set; }
 
     }
 }

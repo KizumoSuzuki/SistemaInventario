@@ -13,6 +13,9 @@ namespace SistemaInventario.Models
         public TipoMovimiento TipoMovimiento { get; set; } 
 
         public DateTime Fecha { get; set; }
+        public int Usuarioid { get; set; }
+        [ForeignKey("Usuarioid")]
+        public virtual Usuario Usuario { get; set; }
 
     }
 }

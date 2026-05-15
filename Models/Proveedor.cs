@@ -5,7 +5,7 @@ namespace SistemaInventario.Models
 {
     public class Proveedor
     {
-        [Key]
+       
         public int Id { get; set; }
         public string Nombre { get; set; }
         public string RNC { get; set; }

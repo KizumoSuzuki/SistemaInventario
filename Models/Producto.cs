@@ -1,4 +1,5 @@
 ﻿using SistemaInventario.Enums;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Text;
 
@@ -6,7 +7,8 @@ namespace SistemaInventario.Models
 {
     public class Producto
     {
-        public int id { get; set; }
+        [Key]
+        public int Id { get; set; }
         public string CodigoProducto { get; set; }
         public string Nombre { get; set; }
         public string Descripcion { get; set; }

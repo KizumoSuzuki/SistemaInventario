@@ -12,8 +12,8 @@ using SistemaInventario.Data;
 namespace SistemaInventario.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20260514151509_sisinventario")]
-    partial class sisinventario
+    [Migration("20260515015407_SistemaInventario")]
+    partial class SistemaInventario
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -71,6 +71,35 @@ namespace SistemaInventario.Migrations
                     b.ToTable("Clientes");
                 });
 
+            modelBuilder.Entity("SistemaInventario.Models.DetalleFactura", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("Cantidad")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Facturaid")
+                        .HasColumnType("int");
+
+                    b.Property<decimal>("PrecioUnitario")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<int>("Productoid")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("Facturaid");
+
+                    b.HasIndex("Productoid");
+
+                    b.ToTable("DetalleFacturas");
+                });
+
             modelBuilder.Entity("SistemaInventario.Models.Factura", b =>
                 {
                     b.Property<int>("Id")
@@ -88,17 +117,12 @@ namespace SistemaInventario.Migrations
                     b.Property<DateOnly>("Fechalimite")
                         .HasColumnType("date");
 
-                    b.Property<int>("Productoid")
-                        .HasColumnType("int");
-
                     b.Property<decimal>("Total")
                         .HasColumnType("decimal(18,2)");
 
                     b.HasKey("Id");
 
                     b.HasIndex("Clienteid");
-
-                    b.HasIndex("Productoid");
 
                     b.ToTable("Facturas");
                 });
@@ -123,20 +147,25 @@ namespace SistemaInventario.Migrations
                     b.Property<int>("TipoMovimiento")
                         .HasColumnType("int");
 
+                    b.Property<int>("Usuarioid")
+                        .HasColumnType("int");
+
                     b.HasKey("Id");
 
                     b.HasIndex("Productoid");
+
+                    b.HasIndex("Usuarioid");
 
                     b.ToTable("MovimientoInventarios");
                 });
 
             modelBuilder.Entity("SistemaInventario.Models.Producto", b =>
                 {
-                    b.Property<int>("id")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("id"));
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<int>("Categoriaid")
                         .HasColumnType("int");
@@ -168,7 +197,7 @@ namespace SistemaInventario.Migrations
                     b.Property<decimal>("Venta")
                         .HasColumnType("decimal(18,2)");
 
-                    b.HasKey("id");
+                    b.HasKey("Id");
 
                     b.HasIndex("Categoriaid");
 
@@ -246,11 +275,11 @@ namespace SistemaInventario.Migrations
                     b.ToTable("Usuarios");
                 });
 
-            modelBuilder.Entity("SistemaInventario.Models.Factura", b =>
+            modelBuilder.Entity("SistemaInventario.Models.DetalleFactura", b =>
                 {
-                    b.HasOne("SistemaInventario.Models.Cliente", "Cliente")
-                        .WithMany()
-                        .HasForeignKey("Clienteid")
+                    b.HasOne("SistemaInventario.Models.Factura", "Factura")
+                        .WithMany("Detalles")
+                        .HasForeignKey("Facturaid")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -260,9 +289,20 @@ namespace SistemaInventario.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("Cliente");
+                    b.Navigation("Factura");
 
                     b.Navigation("Producto");
+                });
+
+            modelBuilder.Entity("SistemaInventario.Models.Factura", b =>
+                {
+                    b.HasOne("SistemaInventario.Models.Cliente", "Cliente")
+                        .WithMany()
+                        .HasForeignKey("Clienteid")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Cliente");
                 });
 
             modelBuilder.Entity("SistemaInventario.Models.MovimientoInventario", b =>
@@ -273,7 +313,15 @@ namespace SistemaInventario.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("SistemaInventario.Models.Usuario", "Usuario")
+                        .WithMany()
+                        .HasForeignKey("Usuarioid")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.Navigation("Producto");
+
+                    b.Navigation("Usuario");
                 });
 
             modelBuilder.Entity("SistemaInventario.Models.Producto", b =>
@@ -298,6 +346,11 @@ namespace SistemaInventario.Migrations
             modelBuilder.Entity("SistemaInventario.Models.Categoria", b =>
                 {
                     b.Navigation("Productos");
+                });
+
+            modelBuilder.Entity("SistemaInventario.Models.Factura", b =>
+                {
+                    b.Navigation("Detalles");
                 });
 #pragma warning restore 612, 618
         }
