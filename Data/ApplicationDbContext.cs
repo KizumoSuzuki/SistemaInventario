@@ -1,5 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using SistemaInventario.Models;
+using SistemaInventario.Models.Entities;
 
 namespace SistemaInventario.Data
 {

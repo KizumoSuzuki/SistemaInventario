@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations.Schema;
 
-namespace SistemaInventario.Models
+namespace SistemaInventario.Models.Entities
 {
     public class DetalleFactura
     {
