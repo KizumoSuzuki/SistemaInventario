@@ -3,16 +3,16 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi;
-using SistemaInventario.Data;
-using SistemaInventario.Repositories;
-using SistemaInventario.Services;
+using CRUD.Data;
+using CRUD.Repositories;
+using CRUD.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Base de datos
-var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
-builder.Services.AddDbContext<ApplicationDbContext>(options =>
-    options.UseSqlServer(connectionString));
+builder.Services.AddDbContext<CRUDContext>(options =>
+    options.UseSqlServer(builder.Configuration.GetConnectionString("CRUDContext")
+        ?? throw new InvalidOperationException("Connection string 'CRUDContext' not found.")));
 
 // JWT Authentication
 var jwtSettings = builder.Configuration.GetSection("Jwt");
@@ -37,42 +37,35 @@ builder.Services.AddAuthentication(options =>
     };
 });
 
-// Agregar Repositorios
-builder.Services.AddScoped<IAlmacenRepository, AlmacenRepository>();
-builder.Services.AddScoped<ICategoriaRepository, CategoriaRepository>();
-builder.Services.AddScoped<IClienteRepository, ClienteRepository>();
-builder.Services.AddScoped<ICompraRepository, CompraRepository>();
-builder.Services.AddScoped<IFacturaRepository, FacturaRepository>();
+// Repositories
 builder.Services.AddScoped<IProductoRepository, ProductoRepository>();
-builder.Services.AddScoped<IProveedorRepository, ProveedorRepository>();
-builder.Services.AddScoped<IUsuarioRepository, UsuarioRepository>();
+builder.Services.AddScoped<IClienteRepository,  ClienteRepository>();
+builder.Services.AddScoped<IVentaRepository,    VentaRepository>();
 
-// Agregar Servicios
-builder.Services.AddScoped<IAlmacenService, AlmacenService>();
-builder.Services.AddScoped<ICategoriaService, CategoriaService>();
-builder.Services.AddScoped<IClienteService, ClienteService>();
-builder.Services.AddScoped<ICompraService, CompraService>();
-builder.Services.AddScoped<IFacturaService, FacturaService>();
+// Servicios
 builder.Services.AddScoped<IProductoService, ProductoService>();
-builder.Services.AddScoped<IProveedorService, ProveedorService>();
-builder.Services.AddScoped<IUsuarioService, UsuarioService>();
+builder.Services.AddScoped<IClienteService, ClienteService>();
+builder.Services.AddScoped<IVentaService, VentaService>();
 
 // CORS
 builder.Services.AddCors(options =>
 {
-    options.AddPolicy("AllowAll", policy =>
+    options.AddPolicy("AllowAll", builder =>
     {
-        policy.AllowAnyOrigin()
-              .AllowAnyMethod()
-              .AllowAnyHeader();
+        builder.AllowAnyOrigin()
+               .AllowAnyMethod()
+               .AllowAnyHeader();
     });
 });
 
-// Controllers + Swagger con soporte JWT (Swashbuckle 10.x)
+// Controllers
 builder.Services.AddControllers();
+
+// Swagger con soporte JWT (Swashbuckle 10.x / Microsoft.OpenApi 2.x)
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(options =>
 {
+    // Definir el esquema de seguridad Bearer
     options.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
     {
         Name = "Authorization",
@@ -80,9 +73,10 @@ builder.Services.AddSwaggerGen(options =>
         Scheme = "Bearer",
         BearerFormat = "JWT",
         In = ParameterLocation.Header,
-        Description = "1) Usa POST /api/Auth/Login con tu email y contraseña para obtener el token\n2) Pega el token aquí para usar la API"
+        Description = "1) Usa /api/Auth/login con tu nombre para obtener el token\n2) Pega el token aquí para usar la API"
     });
 
+    // Requerir el token en todos los endpoints
     options.AddSecurityRequirement(document => new OpenApiSecurityRequirement
     {
         {
@@ -101,10 +95,12 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
+// app.UseHttpsRedirection();
+
 app.UseCors("AllowAll");
 
-app.UseAuthentication();
-app.UseAuthorization();
+app.UseAuthentication(); 
+app.UseAuthorization();  
 
 app.MapControllers();
 

@@ -15,6 +15,7 @@ namespace SistemaInventario.Models.Dto
         [Required]
         [Compare("Contraseña", ErrorMessage = "Las contraseñas no son iguales")]
         public string ConfirmarContraseña { get; set; }
+        public string? Telefono { get; set; }
         public Rol Rol { get; set; }
     }
 }

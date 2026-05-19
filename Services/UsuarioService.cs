@@ -1,3 +1,5 @@
+using System.Security.Cryptography;
+using System.Text;
 using SistemaInventario.Models.Dto;
 using SistemaInventario.Models.Entities;
 using SistemaInventario.Repositories;
@@ -48,7 +50,8 @@ namespace SistemaInventario.Services
             {
                 Nombre = dto.Nombre,
                 Email = dto.Email,
-                Contraseña = dto.Contraseña, // Nota: en un sistema real, la contraseña debe hashearse (BCrypt, etc.)
+                Contraseña = HashPassword(dto.Contraseña),
+                Telefono = dto.Telefono ?? "",
                 Rol = dto.Rol
             };
 
@@ -76,7 +79,7 @@ namespace SistemaInventario.Services
 
             usuario.Nombre = dto.Nombre;
             usuario.Email = dto.Email;
-            usuario.Contraseña = dto.Contraseña;
+            usuario.Contraseña = HashPassword(dto.Contraseña);
             usuario.Rol = dto.Rol;
 
             var result = await _usuarioRepository.UpdateUsuarioAsync(usuario);
@@ -134,6 +137,13 @@ namespace SistemaInventario.Services
                 Telefono = usuario.Telefono,
                 Rol = usuario.Rol
             };
+        }
+
+        private static string HashPassword(string password)
+        {
+            using var sha256 = System.Security.Cryptography.SHA256.Create();
+            var bytes = sha256.ComputeHash(System.Text.Encoding.UTF8.GetBytes(password));
+            return Convert.ToBase64String(bytes);
         }
     }
 }
