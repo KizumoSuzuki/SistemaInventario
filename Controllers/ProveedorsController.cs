@@ -42,7 +42,8 @@ public class ProveedorsController : ControllerBase
 
     // PUT: api/Proveedor/5
     // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-    [HttpPut("{id}")]
+    [Authorize(Roles = "SuperAdmin,Admin")]
+        [HttpPut("{id}")]
     public async Task<IActionResult> PutProveedor(int id, CrearProveedorDto ActualizarProveedorDto)
     {
        var proveedorActualizado = await _proveedorService.UpdateProveedorAsync(id, ActualizarProveedorDto);
@@ -55,7 +56,8 @@ public class ProveedorsController : ControllerBase
 
     // POST: api/Proveedor
     // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-    [HttpPost]
+    [Authorize(Roles = "SuperAdmin,Admin")]
+        [HttpPost]
     public async Task<ActionResult<CrearProveedorDto>> PostProveedor(CrearProveedorDto CrearProveedorDto)
     {
        var nuevoProveedor = await _proveedorService.CreateProveedorAsync(CrearProveedorDto);
@@ -63,7 +65,8 @@ public class ProveedorsController : ControllerBase
     }
 
     // DELETE: api/Proveedor/5
-    [HttpDelete("{id}")]
+    [Authorize(Roles = "SuperAdmin,Admin")]
+        [HttpDelete("{id}")]
     public async Task<IActionResult> DeleteProveedor(int id)
     {
         var proveedorEliminado = await _proveedorService.DeleteProveedorAsync(id);

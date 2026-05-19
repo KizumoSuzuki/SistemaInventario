@@ -37,6 +37,7 @@ namespace SistemaInventario.Controllers
             return Ok(compra);
         }
 
+        [Authorize(Roles = "SuperAdmin,Admin")]
         [HttpPost]
         public async Task<ActionResult<VerCompraDto>> PostCompra(CrearCompraDto dto)
         {
@@ -46,6 +47,7 @@ namespace SistemaInventario.Controllers
             return CreatedAtAction(nameof(GetCompra), new { id = nuevaCompra.Id }, nuevaCompra);
         }
 
+        [Authorize(Roles = "SuperAdmin,Admin")]
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteCompra(int id)
         {

@@ -37,6 +37,7 @@ namespace SistemaInventario.Controllers
             return Ok(almacen);
         }
 
+        [Authorize(Roles = "SuperAdmin,Admin")]
         [HttpPost]
         public async Task<ActionResult<VerAlmacenDto>> PostAlmacen(CrearAlmacenDto CrearAlmacenDto)
         {
@@ -46,6 +47,7 @@ namespace SistemaInventario.Controllers
             return Ok(new {mensaje="Almacen creado", Almacen=nuevoAlmacen});
         }
 
+        [Authorize(Roles = "SuperAdmin,Admin")]
         [HttpPut("{id}")]
         public async Task<IActionResult> PutAlmacen(int id, CrearAlmacenDto ActualizarAlmacenDto)
         {
@@ -55,6 +57,7 @@ namespace SistemaInventario.Controllers
             return Ok(new {mensaje=""});
         }
 
+        [Authorize(Roles = "SuperAdmin,Admin")]
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteAlmacen(int id)
         {

@@ -19,7 +19,9 @@ namespace SistemaInventario.Services
         public async Task<IEnumerable<VerUsuarioDto>> GetAllUsuarioAsync()
         {
             var usuarios = await _usuarioRepository.GetAllUsuarioAsync();
-            return usuarios.Select(u => new VerUsuarioDto
+            return usuarios
+                .Where(u => u.Rol != Enums.Rol.SuperAdmin) // Ocultar al SuperAdmin de la lista
+                .Select(u => new VerUsuarioDto
             {
                 Id = u.Id,
                 Nombre = u.Nombre,

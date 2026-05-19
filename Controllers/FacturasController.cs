@@ -41,7 +41,8 @@ namespace SistemaInventario.Controllers
 
     // PUT: api/Factura/5
     // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-    [HttpPut("{id}")]
+    [Authorize(Roles = "SuperAdmin,Admin")]
+        [HttpPut("{id}")]
     public async Task<IActionResult> PutFactura(int id, CrearFacturaDto ActualizarFacturaDto)
     {
         var facturaActualizada = await _facturaService.UpdateFacturaAsync(id, ActualizarFacturaDto);
@@ -55,7 +56,8 @@ namespace SistemaInventario.Controllers
 
     // POST: api/Factura
     // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-    [HttpPost]
+    [Authorize(Roles = "SuperAdmin,Admin")]
+        [HttpPost]
     public async Task<ActionResult<CrearFacturaDto>> PostFactura(CrearFacturaDto CrearfacturaDto)
     {
         var nuevaFactura = await _facturaService.CreateFacturaAsync(CrearfacturaDto);
@@ -67,7 +69,8 @@ namespace SistemaInventario.Controllers
     }
 
     // DELETE: api/Factura/5
-    [HttpDelete("{id}")]
+    [Authorize(Roles = "SuperAdmin,Admin")]
+        [HttpDelete("{id}")]
     public async Task<IActionResult> DeleteFactura(int id)
     {
        var factura = await _facturaService.GetFacturaByIdAsync(id);

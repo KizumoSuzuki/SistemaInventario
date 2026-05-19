@@ -40,6 +40,7 @@ namespace SistemaInventario.Controllers
         }
 
         // PUT: api/Productos/5
+        [Authorize(Roles = "SuperAdmin,Admin")]
         [HttpPut("{id}")]
         public async Task<IActionResult> PutProducto(int id, CrearProductoDto ActualizarproductoDto)
         {
@@ -52,6 +53,7 @@ namespace SistemaInventario.Controllers
         }
 
         // POST: api/Productos
+        [Authorize(Roles = "SuperAdmin,Admin")]
         [HttpPost]
         public async Task<ActionResult> PostProducto(CrearProductoDto CrearProductoDto)
         {
@@ -65,6 +67,7 @@ namespace SistemaInventario.Controllers
         }
 
         // DELETE: api/Productos/5
+        [Authorize(Roles = "SuperAdmin,Admin")]
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteProducto(int id)
         {

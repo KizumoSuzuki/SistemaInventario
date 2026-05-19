@@ -43,7 +43,8 @@ namespace SistemaInventario.Controllers
 
     // PUT: api/Cliente/5
     // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-    [HttpPut("{id}")]
+    [Authorize(Roles = "SuperAdmin,Admin")]
+        [HttpPut("{id}")]
     public async Task<IActionResult> PutCliente(int id, CrearClienteDto ActualizarClienteDto)
     {
        var ClienteActualizado = await _clienteService.UpdateClienteAsync(id, ActualizarClienteDto);
@@ -56,7 +57,8 @@ namespace SistemaInventario.Controllers
 
     // POST: api/Cliente
     // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-    [HttpPost]
+    [Authorize(Roles = "SuperAdmin,Admin")]
+        [HttpPost]
     public async Task<ActionResult<CrearClienteDto>> PostCliente(CrearClienteDto CrearClienteDto)
     {
     var nuevoCliente = await _clienteService.CreateClienteAsync(CrearClienteDto);
@@ -67,7 +69,8 @@ namespace SistemaInventario.Controllers
         return Ok(new { Mensaje = "Cliente creado exitosamente", Cliente = nuevoCliente });
     }
     // DELETE: api/Cliente/5
-    [HttpDelete("{id}")]
+    [Authorize(Roles = "SuperAdmin,Admin")]
+        [HttpDelete("{id}")]
     public async Task<IActionResult> DeleteCliente(int id)
     {
        var clienteEliminado = await _clienteService.DeleteClienteAsync(id);

@@ -69,7 +69,12 @@ builder.Services.AddCors(options =>
 });
 
 // Controllers + Swagger con soporte JWT (Swashbuckle 10.x)
-builder.Services.AddControllers();
+builder.Services.AddControllers()
+    .AddJsonOptions(options =>
+    {
+        // Esto le dice a .NET que convierta los Enums a Strings al serializar a JSON
+        options.JsonSerializerOptions.Converters.Add(new System.Text.Json.Serialization.JsonStringEnumConverter());
+    });
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(options =>
 {

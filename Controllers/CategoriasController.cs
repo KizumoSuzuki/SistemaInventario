@@ -43,6 +43,7 @@ namespace SistemaInventario.Controllers
         }
 
         // POST: api/Categorias
+        [Authorize(Roles = "SuperAdmin,Admin")]
         [HttpPost]
         public async Task<ActionResult<VerCategoriaDto>> PostCategoria(CrearCategoriaDto crearCategoriaDto)
         {
@@ -56,6 +57,7 @@ namespace SistemaInventario.Controllers
             return Ok(new {mensaje = "Categoria creada", Categoria = nuevaCategoria });
         }
         // PUT: api/Categorias/5
+        [Authorize(Roles = "SuperAdmin,Admin")]
         [HttpPut("{id}")]
         public async Task<IActionResult> PutCategoria(int id, CrearCategoriaDto actualizarCategoriaDto)
         {
@@ -70,6 +72,7 @@ namespace SistemaInventario.Controllers
         }
 
         // DELETE: api/Categorias/5
+        [Authorize(Roles = "SuperAdmin,Admin")]
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteCategoria(int id)
         {
