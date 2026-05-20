@@ -2,7 +2,7 @@ using SistemaInventario.Models.Dto;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
-namespace SistemaInventario.Services
+namespace SistemaInventario.Interfaces.Services
 {
     public interface ICompraService
     {

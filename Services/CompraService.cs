@@ -1,6 +1,7 @@
+using SistemaInventario.Interfaces.Repositories;
+using SistemaInventario.Interfaces.Services;
 using SistemaInventario.Models.Dto;
 using SistemaInventario.Models.Entities;
-using SistemaInventario.Repositories;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,11 +13,15 @@ namespace SistemaInventario.Services
     {
         private readonly ICompraRepository _compraRepository;
         private readonly IProductoRepository _productoRepository;
+        private readonly IProveedorRepository _proveedorRepository;
+        private readonly IAlmacenRepository _almacenRepository;
 
-        public CompraService(ICompraRepository compraRepository, IProductoRepository productoRepository)
+        public CompraService(ICompraRepository compraRepository, IProductoRepository productoRepository, IProveedorRepository proveedorRepository, IAlmacenRepository almacenRepository)
         {
             _compraRepository = compraRepository;
             _productoRepository = productoRepository;
+            _proveedorRepository = proveedorRepository;
+            _almacenRepository = almacenRepository;
         }
 
         public async Task<IEnumerable<VerCompraDto>> GetAllComprasAsync()
@@ -71,6 +76,12 @@ namespace SistemaInventario.Services
 
         public async Task<VerCompraDto> CreateCompraAsync(CrearCompraDto dto)
         {
+            var proveedor = await _proveedorRepository.GetProveedorByIdAsync(dto.Proveedorid);
+            if (proveedor == null) throw new ArgumentException("El proveedor especificado no existe.");
+
+            var almacen = await _almacenRepository.GetAlmacenByIdAsync(dto.Almacenid);
+            if (almacen == null) throw new ArgumentException("El almacén especificado no existe.");
+
             var compra = new Compra
             {
                 Proveedorid = dto.Proveedorid,

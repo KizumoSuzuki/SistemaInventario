@@ -4,6 +4,8 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi;
 using SistemaInventario.Data;
+using SistemaInventario.Interfaces.Repositories;
+using SistemaInventario.Interfaces.Services;
 using SistemaInventario.Repositories;
 using SistemaInventario.Services;
 

@@ -23,5 +23,6 @@ namespace SistemaInventario.Models.Entities
         public int Proveedorid { get; set; }
         [ForeignKey("Proveedorid")]
         public virtual Proveedor Proveedor { get; set; }
+        public ICollection<AlmacenProducto> AlmacenProductos { get; set; } = new List<AlmacenProducto>();
     }
 }

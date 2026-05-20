@@ -9,5 +9,6 @@ namespace SistemaInventario.Models.Entities
         public string Nombre { get; set; }
         public string Ubicacion { get; set; }
         public string Capacidad { get; set; }
+        public ICollection<AlmacenProducto> AlmacenProductos { get; set; } = new List<AlmacenProducto>();
     }
 }

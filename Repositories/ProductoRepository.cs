@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using SistemaInventario.Data;
+using SistemaInventario.Interfaces.Repositories;
 using SistemaInventario.Models.Entities;
 
 

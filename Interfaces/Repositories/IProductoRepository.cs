@@ -1,6 +1,6 @@
 ﻿using SistemaInventario.Models.Entities;
 
-namespace SistemaInventario.Repositories
+namespace SistemaInventario.Interfaces.Repositories
 {
     public interface IProductoRepository
     {

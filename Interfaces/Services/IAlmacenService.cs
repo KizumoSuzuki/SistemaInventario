@@ -1,8 +1,7 @@
 using SistemaInventario.Models.Dto;
-using System.Collections.Generic;
-using System.Threading.Tasks;
 
-namespace SistemaInventario.Services
+
+namespace SistemaInventario.Interfaces.Services
 {
     public interface IAlmacenService
     {
@@ -11,5 +10,6 @@ namespace SistemaInventario.Services
         Task<VerAlmacenDto> CreateAlmacenAsync(CrearAlmacenDto dto);
         Task<VerAlmacenDto> UpdateAlmacenAsync(int id, CrearAlmacenDto dto);
         Task<bool> DeleteAlmacenAsync(int id);
+        Task<bool> AsignarProductoAsync(AsignarProductoAlmacenDto dto);
     }
 }

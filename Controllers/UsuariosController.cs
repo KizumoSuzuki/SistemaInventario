@@ -1,7 +1,7 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using SistemaInventario.Interfaces.Services;
 using SistemaInventario.Models.Dto;
-using SistemaInventario.Services;
 
 namespace SistemaInventario.Controllers
 {

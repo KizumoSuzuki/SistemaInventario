@@ -1,6 +1,7 @@
+using SistemaInventario.Interfaces.Repositories;
+using SistemaInventario.Interfaces.Services;
 using SistemaInventario.Models.Dto;
 using SistemaInventario.Models.Entities;
-using SistemaInventario.Repositories;
 
 
 namespace SistemaInventario.Services

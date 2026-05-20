@@ -2,7 +2,7 @@ using SistemaInventario.Models.Entities;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
-namespace SistemaInventario.Repositories
+namespace SistemaInventario.Interfaces.Repositories
 {
     public interface ICompraRepository
     {

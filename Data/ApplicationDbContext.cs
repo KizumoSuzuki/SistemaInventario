@@ -20,10 +20,25 @@ namespace SistemaInventario.Data
         public DbSet<Almacen> Almacenes { get; set; }
         public DbSet<Compra> Compras { get; set; }
         public DbSet<DetalleCompra> DetalleCompras { get; set; }
+        public DbSet<AlmacenProducto> AlmacenProductos { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
+            modelBuilder.Entity<AlmacenProducto>()
+        .HasKey(ap => new { ap.AlmacenId, ap.ProductoId });
+
+            // Relación Almacen -> AlmacenProducto
+            modelBuilder.Entity<AlmacenProducto>()
+                .HasOne(ap => ap.Almacen)
+                .WithMany(a => a.AlmacenProductos)
+                .HasForeignKey(ap => ap.AlmacenId);
+
+            // Relación Producto -> AlmacenProducto
+            modelBuilder.Entity<AlmacenProducto>()
+                .HasOne(ap => ap.Producto)
+                .WithMany(p => p.AlmacenProductos)
+                .HasForeignKey(ap => ap.ProductoId);
 
             modelBuilder.Entity<DetalleCompra>()
                 .HasOne(d => d.Producto)

@@ -1,6 +1,7 @@
+using SistemaInventario.Interfaces.Repositories;
+using SistemaInventario.Interfaces.Services;
 using SistemaInventario.Models.Dto;
 using SistemaInventario.Models.Entities;
-using SistemaInventario.Repositories;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -24,7 +25,14 @@ namespace SistemaInventario.Services
                 Id = a.Id,
                 Nombre = a.Nombre,
                 Ubicacion = a.Ubicacion,
-                Capacidad = a.Capacidad
+                Capacidad = a.Capacidad,
+                Productos = a.AlmacenProductos?.Select(ap => new ProductoEnAlmacenDto
+                {
+                    ProductoId = ap.ProductoId,
+                    NombreProducto = ap.Producto?.Nombre ?? "Desconocido",
+                    CodigoProducto = ap.Producto?.CodigoProducto ?? "N/A",
+                    Stock = ap.Stock
+                }).ToList() ?? new List<ProductoEnAlmacenDto>()
             });
         }
 
@@ -38,7 +46,14 @@ namespace SistemaInventario.Services
                 Id = a.Id,
                 Nombre = a.Nombre,
                 Ubicacion = a.Ubicacion,
-                Capacidad = a.Capacidad
+                Capacidad = a.Capacidad,
+                Productos = a.AlmacenProductos?.Select(ap => new ProductoEnAlmacenDto
+                {
+                    ProductoId = ap.ProductoId,
+                    NombreProducto = ap.Producto?.Nombre ?? "Desconocido",
+                    CodigoProducto = ap.Producto?.CodigoProducto ?? "N/A",
+                    Stock = ap.Stock
+                }).ToList() ?? new List<ProductoEnAlmacenDto>()
             };
         }
 
@@ -91,6 +106,17 @@ namespace SistemaInventario.Services
         public async Task<bool> DeleteAlmacenAsync(int id)
         {
             return await _almacenRepository.DeleteAlmacenAsync(id);
+        }
+
+        public async Task<bool> AsignarProductoAsync(AsignarProductoAlmacenDto dto)
+        {
+            if (dto.Cantidad <= 0) return false;
+
+            return await _almacenRepository.AñadirProductoAlAlmacenAsync(
+                dto.AlmacenId,
+                dto.ProductoId,
+                dto.Cantidad
+            );
         }
     }
 }

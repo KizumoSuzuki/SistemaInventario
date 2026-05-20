@@ -1,6 +1,6 @@
 ﻿using SistemaInventario.Models.Dto;
 
-namespace SistemaInventario.Services
+namespace SistemaInventario.Interfaces.Services
 {
     public interface IProveedorService
     {

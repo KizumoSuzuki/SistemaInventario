@@ -1,8 +1,7 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-
+using SistemaInventario.Interfaces.Services;
 using SistemaInventario.Models.Dto;
-using SistemaInventario.Services;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
@@ -41,10 +40,17 @@ namespace SistemaInventario.Controllers
         [HttpPost]
         public async Task<ActionResult<VerCompraDto>> PostCompra(CrearCompraDto dto)
         {
-            var nuevaCompra = await _compraService.CreateCompraAsync(dto);
-            if (nuevaCompra == null) return BadRequest(new { mensaje = "Error al registrar la compra" });
+            try
+            {
+                var nuevaCompra = await _compraService.CreateCompraAsync(dto);
+                if (nuevaCompra == null) return BadRequest(new { mensaje = "Error al registrar la compra" });
 
-            return CreatedAtAction(nameof(GetCompra), new { id = nuevaCompra.Id }, nuevaCompra);
+                return CreatedAtAction(nameof(GetCompra), new { id = nuevaCompra.Id }, nuevaCompra);
+            }
+            catch (ArgumentException ex)
+            {
+                return BadRequest(new { mensaje = ex.Message });
+            }
         }
 
         [Authorize(Roles = "SuperAdmin,Admin")]
